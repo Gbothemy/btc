@@ -1,0 +1,164 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id                String    @id @default(cuid())
+  name              String?
+  email             String    @unique
+  password          String
+  role              Role      @default(USER)
+  emailVerified     DateTime?
+  verifyToken       String?
+  resetToken        String?
+  resetTokenExpiry  DateTime?
+  twoFactorSecret   String?
+  twoFactorEnabled  Boolean   @default(false)
+  referralCode      String    @unique @default(cuid())
+  referredById      String?
+  referredBy        User?     @relation("Referrals", fields: [referredById], references: [id])
+  referrals         User[]    @relation("Referrals")
+  suspended         Boolean   @default(false)
+  balance           Float     @default(0)
+  miningBalance     Float     @default(0)
+  totalEarned       Float     @default(0)
+  autoCompound      Boolean   @default(false)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  subscriptions        Subscription[]
+  withdrawals          Withdrawal[]
+  transactions         Transaction[]
+  workers              Worker[]
+  depositConfirmations DepositConfirmation[]
+  notifications        Notification[]
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model Plan {
+  id            String   @id @default(cuid())
+  name          String
+  price         Float
+  hashrate      Float
+  durationDays  Int
+  roiPercent    Float
+  description   String?
+  active        Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  subscriptions Subscription[]
+  depositConfirmations DepositConfirmation[]
+}
+
+model Subscription {
+  id          String    @id @default(cuid())
+  userId      String
+  planId      String
+  user        User      @relation(fields: [userId], references: [id])
+  plan        Plan      @relation(fields: [planId], references: [id])
+  startDate   DateTime  @default(now())
+  endDate     DateTime
+  active      Boolean   @default(true)
+  hashrate    Float
+  lastClaimedAt DateTime?
+  createdAt   DateTime  @default(now())
+}
+
+model Worker {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  name      String
+  hashrate  Float
+  online    Boolean  @default(true)
+  lastSeen  DateTime @default(now())
+  createdAt DateTime @default(now())
+}
+
+model Withdrawal {
+  id            String           @id @default(cuid())
+  userId        String
+  user          User             @relation(fields: [userId], references: [id])
+  amount        Float
+  walletAddress String
+  currency      String           @default("BTC")
+  status        WithdrawalStatus @default(PENDING)
+  txHash        String?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+}
+
+enum WithdrawalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Transaction {
+  id          String          @id @default(cuid())
+  userId      String
+  user        User            @relation(fields: [userId], references: [id])
+  type        TransactionType
+  amount      Float
+  description String?
+  createdAt   DateTime        @default(now())
+}
+
+enum TransactionType {
+  DEPOSIT
+  EARNING
+  WITHDRAWAL
+  REFERRAL_BONUS
+}
+
+model Announcement {
+  id        String   @id @default(cuid())
+  title     String
+  message   String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model DepositConfirmation {
+  id             String                   @id @default(cuid())
+  userId         String
+  user           User                     @relation(fields: [userId], references: [id])
+  planId         String
+  plan           Plan                     @relation(fields: [planId], references: [id])
+  subscriptionId String?
+  currency       String
+  cryptoAmount   String
+  usdAmount      Float
+  txHash         String?
+  walletAddress  String
+  status         DepositConfirmationStatus @default(PENDING)
+  autoApprovedAt DateTime?
+  expiresAt      DateTime
+  createdAt      DateTime                 @default(now())
+  updatedAt      DateTime                 @updatedAt
+}
+
+enum DepositConfirmationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  EXPIRED
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  title     String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}

@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* { box-sizing: border-box; }
+
+body {
+  background-color: #000;
+  color: #fff;
+}
+
+@layer utilities {
+  .gradient-gold {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+  }
+  .text-gradient-gold {
+    background: linear-gradient(135deg, #f59e0b, #fbbf24);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
