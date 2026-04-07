@@ -1,11 +1,12 @@
-import { auth } from "@/lib/auth";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 import { formatUSD } from "@/lib/utils";
 
 export default async function TransactionsPage() {
-  const session = await auth();
+  const session = await getServerSession(authOptions);
   if (!session?.user?.id) return null;
   const transactions = await prisma.transaction.findMany({
     where: { userId: session.user.id },

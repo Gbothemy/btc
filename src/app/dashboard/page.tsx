@@ -1,4 +1,5 @@
-import { auth } from "@/lib/auth";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getBtcPrice, calcDailyEarnings } from "@/lib/mining";
 import Card from "@/components/ui/Card";
@@ -12,7 +13,7 @@ type WorkerType = { online: boolean };
 type WithdrawalType = { id: string; amount: number; createdAt: Date; status: string };
 
 export default async function DashboardPage() {
-  const session = await auth();
+  const session = await getServerSession(authOptions);
   if (!session?.user?.id) return null;
 
   // Single query — fetch everything at once to minimize pool usage

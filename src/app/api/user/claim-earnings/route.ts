@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { calcHourlyEarnings } from "@/lib/mining";
 
 export async function POST(req: NextRequest) {
-  const session = await auth();
+  const session = await getServerSession(authOptions);
   if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const { subscriptionId } = await req.json();
@@ -59,3 +60,4 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json({ message: "Earnings claimed!", amount, planName: sub.plan.name });
 }
+

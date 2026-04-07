@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 const DEPOSIT_ADDRESSES: Record<string, { address: string; network: string; rate: number }> = {
   BTC:  { address: "bc1qspdrp80sz6ukw4dl84gzk54krlqe53nfgu5jp3", network: "Bitcoin",         rate: 65000 },
@@ -9,7 +10,7 @@ const DEPOSIT_ADDRESSES: Record<string, { address: string; network: string; rate
 };
 
 export async function POST(req: NextRequest) {
-  const session = await auth();
+  const session = await getServerSession(authOptions);
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const { amount, currency } = await req.json();
@@ -30,3 +31,4 @@ export async function POST(req: NextRequest) {
     usdAmount: Number(amount),
   });
 }
+

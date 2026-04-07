@@ -14,13 +14,18 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const res = await signIn("credentials", { ...form, redirect: false });
+    const res = await signIn("credentials", {
+      email: form.email,
+      password: form.password,
+      redirect: false,
+    });
     setLoading(false);
     if (res?.error) {
-      toast.error("Invalid credentials or account not verified.");
+      toast.error("Invalid email or password.");
     } else {
       toast.success("Welcome back!");
-      window.location.replace("/dashboard");
+      router.push("/dashboard");
+      router.refresh();
     }
   };
 
@@ -35,7 +40,6 @@ export default function LoginPage() {
           <h1 className="text-2xl font-bold text-white">Welcome back</h1>
           <p className="text-gray-500 mt-1">Sign in to your mining account</p>
         </div>
-
         <div className="bg-gray-900 border border-gray-800 rounded-xl p-8">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
@@ -60,14 +64,8 @@ export default function LoginPage() {
                 placeholder="••••••••"
               />
             </div>
-            <div className="flex justify-end">
-              <Link href="/auth/forgot-password" className="text-xs text-amber-400 hover:text-amber-300">
-                Forgot password?
-              </Link>
-            </div>
             <Button type="submit" className="w-full" loading={loading}>Sign In</Button>
           </form>
-
           <p className="text-center text-gray-500 text-sm mt-6">
             Don&apos;t have an account?{" "}
             <Link href="/auth/register" className="text-amber-400 hover:text-amber-300">Create one</Link>
