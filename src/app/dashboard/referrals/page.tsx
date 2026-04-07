@@ -6,16 +6,18 @@ import { formatUSD } from "@/lib/utils";
 
 export default async function ReferralsPage() {
   const session = await auth();
+  if (!session?.user?.id) return null;
   const user = await prisma.user.findUnique({
-    where: { id: session!.user.id },
+    where: { id: session.user.id },
     include: {
       referrals: { select: { id: true, name: true, email: true, createdAt: true } },
     },
   });
 
-  const referralLink = `${process.env.NEXTAUTH_URL}/auth/register?ref=${user?.referralCode}`;
+  const baseUrl = process.env.NEXTAUTH_URL || "https://btc-mining-beryl.vercel.app";
+  const referralLink = `${baseUrl}/auth/register?ref=${user?.referralCode}`;
   const referralEarnings = await prisma.transaction.aggregate({
-    where: { userId: session!.user.id, type: "REFERRAL_BONUS" },
+    where: { userId: session.user.id, type: "REFERRAL_BONUS" },
     _sum: { amount: true },
   });
 

@@ -6,8 +6,9 @@ import { formatUSD } from "@/lib/utils";
 
 export default async function TransactionsPage() {
   const session = await auth();
+  if (!session?.user?.id) return null;
   const transactions = await prisma.transaction.findMany({
-    where: { userId: session!.user.id },
+    where: { userId: session.user.id },
     orderBy: { createdAt: "desc" },
     take: 50,
   });

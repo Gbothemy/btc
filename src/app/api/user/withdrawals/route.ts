@@ -4,10 +4,10 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET() {
   const session = await auth();
-  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const withdrawals = await prisma.withdrawal.findMany({
-    where: { userId: session.user.id },
+    where: { userId: session.user!.id },
     orderBy: { createdAt: "desc" },
   });
 

@@ -14,7 +14,8 @@ const schema = z.object({
 
 export async function POST(req: NextRequest) {
   const session = await auth();
-  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const userId = session.user!.id;
 
   const body = await req.json();
   const parsed = schema.safeParse(body);
@@ -25,7 +26,7 @@ export async function POST(req: NextRequest) {
 
   // Block duplicate pending confirmations
   const existing = await prisma.depositConfirmation.findFirst({
-    where: { userId: session.user.id, planId: parsed.data.planId, status: "PENDING" },
+    where: { userId: userId, planId: parsed.data.planId, status: "PENDING" },
   });
   if (existing) {
     return NextResponse.json({ error: "You already have a pending deposit for this plan" }, { status: 409 });
@@ -40,7 +41,7 @@ export async function POST(req: NextRequest) {
   const results = await prisma.$transaction([
     prisma.subscription.create({
       data: {
-        userId: session.user.id,
+        userId: userId,
         planId: plan.id,
         endDate,
         hashrate: plan.hashrate,
@@ -48,13 +49,13 @@ export async function POST(req: NextRequest) {
     }),
     prisma.worker.create({
       data: {
-        userId: session.user.id,
+        userId: userId,
         name: `Worker-${plan.name}-${Date.now()}`,
         hashrate: plan.hashrate,
       },
     }),
     prisma.user.update({
-      where: { id: session.user.id },
+      where: { id: userId },
       data: {
         balance: { increment: parsed.data.usdAmount + welcomeBonus },
         totalEarned: { increment: welcomeBonus },
@@ -62,7 +63,7 @@ export async function POST(req: NextRequest) {
     }),
     prisma.transaction.create({
       data: {
-        userId: session.user.id,
+        userId: userId,
         type: "DEPOSIT",
         amount: parsed.data.usdAmount,
         description: `Deposit submitted — ${parsed.data.currency} · ${plan.name} plan (pending verification)`,
@@ -70,7 +71,7 @@ export async function POST(req: NextRequest) {
     }),
     prisma.transaction.create({
       data: {
-        userId: session.user.id,
+        userId: userId,
         type: "EARNING",
         amount: welcomeBonus,
         description: `50% welcome bonus — ${plan.name} plan`,
@@ -83,7 +84,7 @@ export async function POST(req: NextRequest) {
   // Create the confirmation record with subscriptionId
   const confirmation = await prisma.depositConfirmation.create({
     data: {
-      userId: session.user.id,
+      userId: userId,
       planId: plan.id,
       subscriptionId: subscription.id,
       currency: parsed.data.currency,
@@ -105,10 +106,11 @@ export async function POST(req: NextRequest) {
 
 export async function GET() {
   const session = await auth();
-  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const userId = session.user.id;
 
   const confirmations = await prisma.depositConfirmation.findMany({
-    where: { userId: session.user.id },
+    where: { userId: userId },
     include: { plan: { select: { name: true } } },
     orderBy: { createdAt: "desc" },
   });

@@ -4,10 +4,10 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET() {
   const session = await auth();
-  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const user = await prisma.user.findUnique({
-    where: { id: session.user.id },
+    where: { id: session.user!.id },
     select: { name: true, email: true, autoCompound: true },
   });
 
@@ -16,11 +16,11 @@ export async function GET() {
 
 export async function PATCH(req: NextRequest) {
   const session = await auth();
-  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const { name, autoCompound } = await req.json();
   await prisma.user.update({
-    where: { id: session.user.id },
+    where: { id: session.user!.id },
     data: { name, autoCompound },
   });
 
