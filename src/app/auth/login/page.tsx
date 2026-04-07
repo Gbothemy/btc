@@ -1,27 +1,26 @@
 "use client";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Button from "@/components/ui/Button";
 import toast from "react-hot-toast";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [form, setForm] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const res = await signIn("credentials", {
-      email: form.email,
-      password: form.password,
-      redirect: false,
-    });
+    const res = await signIn("credentials", { ...form, redirect: false });
     setLoading(false);
-    if (!res || res.error) {
-      toast.error("Invalid email or password.");
+    if (res?.error) {
+      toast.error("Invalid credentials or account not verified.");
     } else {
-      window.location.replace("/dashboard");
+      toast.success("Welcome back!");
+      router.push("/dashboard");
     }
   };
 
@@ -36,6 +35,7 @@ export default function LoginPage() {
           <h1 className="text-2xl font-bold text-white">Welcome back</h1>
           <p className="text-gray-500 mt-1">Sign in to your mining account</p>
         </div>
+
         <div className="bg-gray-900 border border-gray-800 rounded-xl p-8">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
@@ -60,8 +60,14 @@ export default function LoginPage() {
                 placeholder="••••••••"
               />
             </div>
+            <div className="flex justify-end">
+              <Link href="/auth/forgot-password" className="text-xs text-amber-400 hover:text-amber-300">
+                Forgot password?
+              </Link>
+            </div>
             <Button type="submit" className="w-full" loading={loading}>Sign In</Button>
           </form>
+
           <p className="text-center text-gray-500 text-sm mt-6">
             Don&apos;t have an account?{" "}
             <Link href="/auth/register" className="text-amber-400 hover:text-amber-300">Create one</Link>
