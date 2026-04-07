@@ -31,11 +31,7 @@ export default async function AdminDepositsPage() {
           <p className="text-gray-500 text-sm">No deposit confirmations yet.</p>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="text-gray-500 border-b border-gray-800">
-                  <th className="text-left py-3 pr-4">User</th>
-                  <th className="text-left py-3 pr-4">Amount</th>
+            <table className="w-full text-sm min-w-[700px]">
                   <th className="text-left py-3 pr-4">Currency</th>
                   <th className="text-left py-3 pr-4">Plan</th>
                   <th className="text-left py-3 pr-4">Tx Hash</th>

@@ -6,7 +6,7 @@ export default function AboutPage() {
     <main>
       <Navbar />
       <div className="pt-24 pb-20 max-w-4xl mx-auto px-4">
-        <h1 className="text-5xl font-bold text-white mb-6">About HashVault</h1>
+        <h1 className="text-4xl sm:text-5xl font-bold text-white mb-6">About HashVault</h1>
         <p className="text-gray-400 text-lg mb-8">
           HashVault is a professional Bitcoin cloud mining platform founded in 2020. We operate mining farms across North America, Europe, and Asia, providing retail investors access to institutional-grade mining infrastructure.
         </p>

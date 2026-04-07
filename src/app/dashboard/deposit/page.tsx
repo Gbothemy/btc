@@ -83,7 +83,7 @@ export default function DepositPage() {
     <div>
       <h1 className="text-2xl font-bold text-white mb-6">Deposit Funds</h1>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
 
         {/* Step 1 — Select currency & amount */}
         <Card className={step !== "select" ? "opacity-60" : ""}>

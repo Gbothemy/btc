@@ -131,7 +131,8 @@ export default function PlansPage() {
               </div>
             ))}
           </div>
-          <div className="mt-6 overflow-x-auto">
+          <div className="mt-6 overflow-x-auto -mx-4 sm:mx-0">
+            <div className="min-w-[500px] px-4 sm:px-0">
             <table className="w-full text-sm text-center">
               <thead>
                 <tr className="text-gray-500 border-b border-gray-800">
@@ -156,6 +157,7 @@ export default function PlansPage() {
                 ))}
               </tbody>
             </table>
+            </div>
           </div>
         </div>
 

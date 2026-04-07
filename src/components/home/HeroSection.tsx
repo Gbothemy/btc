@@ -14,26 +14,27 @@ export default function HeroSection() {
           Mining Network Active — 12,847 Miners Online
         </div>
 
-        <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+        <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
           Mine Bitcoin with{" "}
           <span className="text-gradient-gold">Professional</span>
-          <br />Grade Hardware
+          <br className="hidden sm:block" />
+          Grade Hardware
         </h1>
 
-        <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-10">
+        <p className="text-gray-400 text-base md:text-xl max-w-2xl mx-auto mb-10">
           Start earning Bitcoin today with our cloud mining platform. No hardware required, transparent payouts, and real-time monitoring.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link href="/auth/register">
-            <Button size="lg">Start Mining Now</Button>
+            <Button size="lg" className="w-full sm:w-auto">Start Mining Now</Button>
           </Link>
           <Link href="/plans">
-            <Button variant="outline" size="lg">View Plans</Button>
+            <Button variant="outline" size="lg" className="w-full sm:w-auto">View Plans</Button>
           </Link>
         </div>
 
-        <div className="mt-16 grid grid-cols-3 gap-8 max-w-lg mx-auto">
+        <div className="mt-12 grid grid-cols-3 gap-4 sm:gap-8 max-w-lg mx-auto">
           {[
             { label: "Total Paid Out", value: "$4.2M+" },
             { label: "Active Miners", value: "12,847" },
