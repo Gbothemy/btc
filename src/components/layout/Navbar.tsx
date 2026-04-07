@@ -30,7 +30,7 @@ export default function Navbar() {
                 <Link href="/dashboard">
                   <Button variant="outline" size="sm">Dashboard</Button>
                 </Link>
-                <Button variant="ghost" size="sm" onClick={() => signOut()}>Sign Out</Button>
+                <Button variant="ghost" size="sm" onClick={() => signOut({ callbackUrl: "/auth/login" })}>Sign Out</Button>
               </>
             ) : (
               <>
