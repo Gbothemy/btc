@@ -20,7 +20,7 @@ export default function LoginPage() {
       toast.error("Invalid credentials or account not verified.");
     } else {
       toast.success("Welcome back!");
-      router.push("/dashboard");
+      window.location.replace("/dashboard");
     }
   };
 
