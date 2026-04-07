@@ -16,6 +16,10 @@ export default async function AdminWithdrawalsPage() {
       <Card>
         <div className="overflow-x-auto">
           <table className="w-full text-sm min-w-[500px]">
+            <thead>
+              <tr className="text-gray-500 border-b border-gray-800">
+                <th className="text-left py-3 pr-4">User</th>
+                <th className="text-left py-3 pr-4">Amount</th>
                 <th className="text-left py-3 pr-4">Wallet</th>
                 <th className="text-left py-3 pr-4">Status</th>
                 <th className="text-left py-3">Actions</th>

@@ -17,6 +17,10 @@ export default async function AdminUsersPage() {
       <Card>
         <div className="overflow-x-auto">
           <table className="w-full text-sm min-w-[600px]">
+            <thead>
+              <tr className="text-gray-500 border-b border-gray-800">
+                <th className="text-left py-3 pr-4">User</th>
+                <th className="text-left py-3 pr-4">Balance</th>
                 <th className="text-left py-3 pr-4">Total Earned</th>
                 <th className="text-left py-3 pr-4">Status</th>
                 <th className="text-left py-3 pr-4">Joined</th>

@@ -32,6 +32,10 @@ export default async function AdminDepositsPage() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm min-w-[700px]">
+              <thead>
+                <tr className="text-gray-500 border-b border-gray-800">
+                  <th className="text-left py-3 pr-4">User</th>
+                  <th className="text-left py-3 pr-4">Amount</th>
                   <th className="text-left py-3 pr-4">Currency</th>
                   <th className="text-left py-3 pr-4">Plan</th>
                   <th className="text-left py-3 pr-4">Tx Hash</th>
