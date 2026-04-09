@@ -49,9 +49,11 @@ export default async function DashboardPage() {
   return (
     <div>
       <AnnouncementBanner />
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-white">Welcome back, {user?.name?.split(" ")[0]} 👋</h1>
-        <p className="text-gray-500 mt-1">Here&apos;s your mining overview</p>
+      <div className="mb-6 pt-2">
+        <h1 className="text-xl sm:text-2xl font-bold text-white truncate">
+          Welcome back, {user?.name?.split(" ")[0] || "Miner"} 👋
+        </h1>
+        <p className="text-gray-500 mt-1 text-sm">Here&apos;s your mining overview</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">

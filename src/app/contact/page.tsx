@@ -58,9 +58,9 @@ export default function ContactPage() {
 
         <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
           {[
-            { icon: "📧", label: "Email", value: "support@hashvault.io" },
+            { icon: "📧", label: "Email", value: "hashvaultsupport@gmail.com" },
             { icon: "💬", label: "Live Chat", value: "Available 24/7" },
-            { icon: "📱", label: "Telegram", value: "@HashVaultSupport" },
+            { icon: "🌐", label: "Website", value: "www.hashvault.site" },
           ].map((c) => (
             <div key={c.label} className="bg-gray-900 border border-gray-800 rounded-xl p-4">
               <div className="text-2xl mb-2">{c.icon}</div>
