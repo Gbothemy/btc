@@ -50,7 +50,7 @@ export default async function DashboardPage() {
     <div>
       <AnnouncementBanner />
       <div className="mb-6 pt-2">
-        <h1 className="text-xl sm:text-2xl font-bold text-white truncate">
+        <h1 className="text-xl sm:text-2xl font-bold text-white">
           Welcome back, {user?.name?.split(" ")[0] || "Miner"} 👋
         </h1>
         <p className="text-gray-500 mt-1 text-sm">Here&apos;s your mining overview</p>
