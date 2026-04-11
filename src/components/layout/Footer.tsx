@@ -37,7 +37,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="border-t border-gray-800 py-4 text-center text-gray-600 text-sm">
-        © {new Date().getFullYear()} HashVault. All rights reserved. · <a href="mailto:hashvaultsupport@gmail.com" className="hover:text-amber-400">hashvaultsupport@gmail.com</a>
+        © {new Date().getFullYear()} HashVault. All rights reserved.
       </div>
     </footer>
   );

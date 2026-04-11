@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 
 const schema = z.object({
-  amount: z.number().min(50),
+  amount: z.number().min(1000),
   walletAddress: z.string().min(10),
   currency: z.enum(["BTC", "USDT"]),
 });

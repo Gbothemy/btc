@@ -6,7 +6,7 @@ import Badge from "@/components/ui/Badge";
 import toast from "react-hot-toast";
 import { formatUSD } from "@/lib/utils";
 
-const MIN_WITHDRAWAL = 50;
+const MIN_WITHDRAWAL = 1000;
 
 export default function WithdrawPage() {
   const [balance, setBalance] = useState(0);
